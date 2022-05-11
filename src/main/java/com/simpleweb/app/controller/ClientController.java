@@ -2,7 +2,6 @@ package com.simpleweb.app.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.simpleweb.app.exception.BadRequestException;
 import com.simpleweb.app.service.ClientService;
 import com.simpleweb.app.service.dto.ClientDto;
-import com.simpleweb.app.service.dto.OrdersDto;
 
 @RestController
 @RequestMapping("api/clients")
@@ -72,12 +70,6 @@ public class ClientController {
 		} catch (IOException e) {
 			throw(new BadRequestException("Error to upload"));
 		}
-	}
-
-	@PostMapping("/{dni}/order")
-	@ResponseStatus(HttpStatus.OK)
-	public void order(@RequestBody OrdersDto ordersDto, @PathVariable String dni) throws InterruptedException, ExecutionException{
-		clientService.order(ordersDto, dni);
 	}
 
 }
