@@ -8,4 +8,5 @@ public interface StoreService {
 
 	public List<StoreDto> findAll();
 	public StoreDto findByCod(String cod);
+	public StoreDto addItem(String storeCod, String itemCod);
 }

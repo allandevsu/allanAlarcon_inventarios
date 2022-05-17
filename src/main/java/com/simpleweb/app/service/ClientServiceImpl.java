@@ -1,6 +1,5 @@
 package com.simpleweb.app.service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -8,7 +7,6 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.simpleweb.app.entity.Client;
 import com.simpleweb.app.exception.BadRequestException;
@@ -16,7 +14,6 @@ import com.simpleweb.app.exception.ResourceNotFoundException;
 import com.simpleweb.app.repository.ClientRepository;
 import com.simpleweb.app.service.dto.ClientDto;
 import com.simpleweb.app.service.mapper.ClientMapper;
-import com.simpleweb.app.util.Image;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -74,12 +71,6 @@ public class ClientServiceImpl implements ClientService {
 	public void deleteByDni(String dni) {
 		clientRepository.findByDni(dni).orElseThrow(() -> new ResourceNotFoundException("Client not found"));
 		clientRepository.deleteByDni(dni);
-	}
-
-	@Override
-	public void uploadImage(String dni, MultipartFile file) throws IOException {
-		Client client = clientRepository.findByDni(dni).orElseThrow(() -> new ResourceNotFoundException("Client not found: " + dni));
-		client.setPicture(Image.compressImage(file.getBytes()));
 	}
 
 }

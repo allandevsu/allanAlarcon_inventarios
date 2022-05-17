@@ -9,6 +9,7 @@ import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.simpleweb.app.client.MockService;
 import com.simpleweb.app.client.dto.ItemStock;
@@ -59,6 +60,7 @@ public class TransactionServiceImpl implements TransactionService {
 		return transactionsDto;
 	}
 
+	@Transactional
 	@Override
 	public void order(OrdersDto ordersDto, String dni) throws InterruptedException, ExecutionException {
 		ClientDto clientDto = clientService.findByDni(dni);
@@ -68,6 +70,10 @@ public class TransactionServiceImpl implements TransactionService {
 
 			for (ItemOrderDto itemOrderDto: orderDto.getItems()) {
 				ItemDto itemDto = itemService.findByCod(itemOrderDto.getCod());
+
+				if (!storeDto.getItems().contains(itemDto)) {
+					throw new BadRequestException("Item " + itemDto.getCod() + " not exists on " + storeDto.getCod());
+				}
 
 				int newStock = itemDto.getStock() - itemOrderDto.getAmount();
 

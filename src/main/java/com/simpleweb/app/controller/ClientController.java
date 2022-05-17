@@ -1,7 +1,8 @@
 package com.simpleweb.app.controller;
 
-import java.io.IOException;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,12 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.simpleweb.app.exception.BadRequestException;
 import com.simpleweb.app.service.ClientService;
 import com.simpleweb.app.service.dto.ClientDto;
 
@@ -34,7 +32,7 @@ public class ClientController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ClientDto create(@RequestBody ClientDto clientDto){
+	public ClientDto create(@Valid @RequestBody ClientDto clientDto){
 		return clientService.save(clientDto);
 	}
 
@@ -60,16 +58,6 @@ public class ClientController {
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable String dni){
 		clientService.deleteByDni(dni);
-	}
-
-	@PostMapping("/{dni}/image")
-	@ResponseStatus(HttpStatus.OK)
-	public void uploadImage(@RequestParam("image") MultipartFile file, @PathVariable String dni){
-		try {
-			clientService.uploadImage(dni, file);
-		} catch (IOException e) {
-			throw(new BadRequestException("Error to upload"));
-		}
 	}
 
 }

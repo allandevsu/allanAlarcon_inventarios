@@ -24,6 +24,7 @@ public class ClientMapper {
 				.id(client.getId())
 				.dni(client.getDni())
 				.name(client.getName())
+				.picture(client.getPicture())
 				.build();
 	}
 
@@ -33,6 +34,7 @@ public class ClientMapper {
 				.id(clientDto.getId())
 				.dni(clientDto.getDni())
 				.name(clientDto.getName())
+				.picture(clientDto.getPicture())
 				.build();
 	}
 }
